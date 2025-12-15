@@ -1,0 +1,178 @@
+# ============================================
+# Full-Stack Project Gitignore (Next.js + Express)
+# ============================================
+
+# ========== DEPENDENCIES ==========
+# Node modules
+node_modules/
+**/node_modules/
+
+# Package managers
+.yarn/*
+!.yarn/patches
+!.yarn/plugins
+!.yarn/releases
+!.yarn/versions
+.pnp.*
+pnpm-lock.yaml
+package-lock.json
+yarn.lock
+
+# ========== FRONTEND (Next.js) ==========
+# Next.js build outputs
+.next/
+out/
+dist/
+
+# Next.js cache
+.cache/
+
+# Production build
+build/
+
+# ========== BACKEND (Express) ==========
+# Logs
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pm2.log
+
+# Runtime data
+pids/
+*.pid
+*.seed
+*.pid.lock
+
+# Development cache
+*.cache
+
+# ========== ENVIRONMENT VARIABLES ==========
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+.env*.local
+
+# Environment variables (optional - you might want to commit some)
+# Uncomment if you want to keep all env files ignored
+# *.env
+
+# ========== IDE & EDITOR ==========
+# VS Code
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+.history/
+
+# JetBrains IDEs (WebStorm, IntelliJ)
+.idea/
+*.iml
+
+# Sublime Text
+*.sublime-*
+
+# Vim
+*.swp
+*.swo
+*~
+
+# macOS
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Windows
+Thumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+
+# Linux
+*~
+
+# ========== DATABASE ==========
+# MySQL
+*.sql
+*.sqlite
+*.sqlite3
+
+# Development database files
+db.sqlite3
+database.sqlite
+
+# ========== TESTING ==========
+# Coverage directory used by tools like istanbul
+coverage/
+.nyc_output/
+
+# ========== BUILD ARTIFACTS ==========
+# Build outputs
+*.exe
+*.dll
+*.so
+*.dylib
+
+# Temporary build artifacts
+*.tsbuildinfo
+*.tmp
+.temp/
+
+# ========== UPLOADED MEDIA ==========
+# Uploads directory (if you have one)
+uploads/
+tmp/
+
+# ========== SSL/TLS ==========
+# SSL certificates
+*.pem
+*.key
+*.crt
+*.csr
+
+# ========== DEPLOYMENT ==========
+# Vercel
+.vercel/
+
+# Netlify
+.netlify/
+
+# Serverless
+.serverless/
+
+# AWS
+.aws-sam/
+
+# ========== MISC ==========
+# Debug
+.debug/
+
+# Lock files (except package managers)
+*.lock
+
+# OS generated files
+ehthumbs.db
+Thumbs.db
+
+# Backup files
+*.bak
+*.backup
+
+# Temporary files
+.tmp/
+.temp/
+
+# ========== PROJECT SPECIFIC ==========
+# Add any project-specific ignores below this line
+# Example: /backend/uploads/
+# Example: /frontend/.next/
+
+# ========== CUSTOM ==========
+# Add any custom ignore patterns for your project here
