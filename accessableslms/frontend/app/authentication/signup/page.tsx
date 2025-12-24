@@ -1,4 +1,5 @@
 // signup/page.tsx
+"use client";
 import { useState, ChangeEvent, FormEvent } from 'react';
 import { createClient } from '@supabase/supabase-js';
 
