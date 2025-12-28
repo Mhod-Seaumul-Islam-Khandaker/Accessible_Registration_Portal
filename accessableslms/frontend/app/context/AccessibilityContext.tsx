@@ -65,6 +65,7 @@ export function AccessibilityProvider({
 
       if (!userCookie) {
         setLoading(false);
+        console.log("No user cookie found");
         return;
       }
 

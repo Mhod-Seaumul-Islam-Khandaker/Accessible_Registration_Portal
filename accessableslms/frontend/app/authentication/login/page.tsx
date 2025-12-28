@@ -1,33 +1,41 @@
-// login/page.tsx
+// app/login/page.tsx
 'use client';
+
 import { useState, ChangeEvent, FormEvent } from 'react';
-import { createClient } from '@supabase/supabase-js';
-import {Supabase} from '../../lib/supabase-client';
-import {LoginFormData, Message, UserAccount} from '../../types/form';
+import { useRouter } from 'next/navigation';
+import { Supabase } from '../../lib/supabase-client';
+import type { LoginFormData, Message, UserAccount } from '../../types/form';
 
 const LoginForm = () => {
+  const router = useRouter(); // ✅ Hooks must be at top level
+
   const [formData, setFormData] = useState<LoginFormData>({
     email: '',
-    password: ''
+    password: '',
   });
 
-  const [loading, setLoading] = useState<boolean>(false);
-  const [message, setMessage] = useState<Message>({ type: '', text: '' });
+  const [loading, setLoading] = useState(false);
+  const [message, setMessage] = useState<Message>({
+    type: '',
+    text: '',
+  });
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setFormData(prev => ({
       ...prev,
-      [name]: value
+      [name]: value,
     }));
   };
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    
-    // Basic validation
+
     if (!formData.email.trim() || !formData.password) {
-      setMessage({ type: 'error', text: 'Email and password are required' });
+      setMessage({
+        type: 'error',
+        text: 'Email and password are required',
+      });
       return;
     }
 
@@ -35,52 +43,47 @@ const LoginForm = () => {
     setMessage({ type: '', text: '' });
 
     try {
-      // Query the database for user with matching email and password
-      const { data: users, error } = await Supabase
+      const { data, error } = await Supabase
         .from('user_account')
         .select('*')
         .eq('email', formData.email)
-        .eq('password', formData.password) // Direct comparison (plain text)
-        .eq('status', 'active') // Only allow active users
+        .eq('password', formData.password) // ⚠️ Plain-text (see note below)
+        .eq('status', 'active')
         .single();
 
-      if (error) {
-        // If no user found or single() fails (no rows)
+      if (error || !data) {
         throw new Error('Invalid email or password');
       }
 
-      if (!users) {
-        throw new Error('Invalid email or password');
-      }
+      const user = data as UserAccount;
 
-      const user = users as UserAccount;
-      
-      // Login successful
-      setMessage({ 
-        type: 'success', 
-        text: `Login successful! Welcome back, ${user.full_name}. Role: ${user.role}` 
+      // Store user in cookie (encoded)
+      document.cookie =
+        `user=${encodeURIComponent(
+          JSON.stringify({
+            id: user.id,
+            name: user.full_name,
+            email: user.email,
+            role: user.role,
+            student_id: user.student_id,
+            employee_id: user.employee_id,
+          })
+        )}; path=/`;
+
+      setMessage({
+        type: 'success',
+        text: `Login successful! Welcome back, ${user.full_name}.`,
       });
-      
-      // Store user data in cookie
-      document.cookie = "user=" + JSON.stringify({
-        id: user.id,
-        name: user.full_name,
-        email: user.email,
-        role: user.role,
-        student_id: user.student_id,
-        employee_id: user.employee_id
-      }) + "; path=/";
-      
-      // Reset form
+
       setFormData({ email: '', password: '' });
-      
-      // Redirect or update app state here
-      // Example: window.location.href = '/dashboard';
-      
+
+      // Redirect based on role (optional but recommended)
+      router.push(`/${user.role}`);
+
     } catch (error: any) {
-      setMessage({ 
-        type: 'error', 
-        text: error.message || 'Login failed. Please try again.' 
+      setMessage({
+        type: 'error',
+        text: error.message || 'Login failed. Please try again.',
       });
     } finally {
       setLoading(false);
@@ -90,7 +93,13 @@ const LoginForm = () => {
   return (
     <form onSubmit={handleSubmit} className="space-y-4">
       {message.text && (
-        <div className={`mb-4 p-3 rounded ${message.type === 'error' ? 'bg-red-900/50 border border-red-700 text-red-200' : 'bg-green-900/50 border border-green-700 text-green-200'}`}>
+        <div
+          className={`mb-4 p-3 rounded ${
+            message.type === 'error'
+              ? 'bg-red-900/50 border border-red-700 text-red-200'
+              : 'bg-green-900/50 border border-green-700 text-green-200'
+          }`}
+        >
           {message.text}
         </div>
       )}
@@ -104,8 +113,7 @@ const LoginForm = () => {
           name="email"
           value={formData.email}
           onChange={handleChange}
-          className="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-          placeholder="john@example.com"
+          className="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-md"
           required
         />
       </div>
@@ -119,8 +127,7 @@ const LoginForm = () => {
           name="password"
           value={formData.password}
           onChange={handleChange}
-          className="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-          placeholder="••••••••"
+          className="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-md"
           required
         />
       </div>
@@ -128,20 +135,10 @@ const LoginForm = () => {
       <button
         type="submit"
         disabled={loading}
-        className="w-full bg-blue-600 hover:bg-blue-700 disabled:bg-blue-800 text-white font-medium py-2.5 px-4 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-gray-800 transition-colors"
+        className="w-full bg-blue-600 hover:bg-blue-700 disabled:bg-blue-800 text-white py-2.5 rounded-md"
       >
         {loading ? 'Logging in...' : 'Login'}
       </button>
-
-      <div className="text-center mt-4">
-        <p className="text-sm text-gray-400">
-          Demo login info will be shown here
-          <br />
-          <span className="text-yellow-500 text-xs">
-            (You'll add test user data after signup)
-          </span>
-        </p>
-      </div>
     </form>
   );
 };
