@@ -13,10 +13,10 @@ interface NavItem {
 }
 
 const studentNavItems: NavItem[] = [
-  { label: 'Home', href: '/dashboard/student', icon: <Home size={20} /> },
-  { label: 'Advising', href: '/dashboard/student/advising', icon: <Users size={20} /> },
-  { label: 'Class Schedule', href: '/dashboard/student/schedule', icon: <Calendar size={20} /> },
-  { label: 'Faculties', href: '/dashboard/student/faculties', icon: <GraduationCap size={20} /> },
+  { label: 'Home', href: '/student', icon: <Home size={20} /> },
+  { label: 'Advising', href: '/student/advising', icon: <Users size={20} /> },
+  { label: 'Class Schedule', href: '/student/schedule', icon: <Calendar size={20} /> },
+  { label: 'Faculties', href: '/student/faculties', icon: <GraduationCap size={20} /> },
 ];
 
 export default function Sidebar({ role }: { role: 'student' | 'teacher' | 'admin' }) {
