@@ -1,3 +1,4 @@
+// app/hooks/useAuth.tsx
 "use client";
 
 import { useEffect, useState } from 'react';

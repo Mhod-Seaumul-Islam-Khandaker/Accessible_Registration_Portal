@@ -1,3 +1,4 @@
+// app/student/course-selection/page.tsx
 "use client";
 
 import { useAuth } from '../../hooks/useAuth';

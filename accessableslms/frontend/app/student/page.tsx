@@ -43,21 +43,51 @@ export default function StudentDashboardPage() {
 
     // Fetch enrolled courses
     if (user) {
+      console.log('User found, fetching enrolled courses:', user);
       fetchEnrolledCourses();
+    } else {
+      console.log('No user found');
     }
   }, [user]);
 
   const fetchEnrolledCourses = async () => {
     if (!user) return;
     try {
-      const { data, error } = await Supabase
+      console.log('Fetching enrolled courses for user:', user.id);
+      
+      // First, get enrollments
+      const { data: enrollments, error: enrollError } = await Supabase
         .from('enrollment')
-        .select('*, sections(*, course(*))')
+        .select('*')
         .eq('student_id', user.id);
 
-      if (error) throw error;
+      console.log('Enrollments data:', enrollments);
+      console.log('Enrollments error:', enrollError);
 
-      setEnrolledCourses(data?.map(item => item.sections) || []);
+      if (enrollError) throw enrollError;
+
+      if (!enrollments || enrollments.length === 0) {
+        console.log('No enrollments found');
+        setEnrolledCourses([]);
+        return;
+      }
+
+      // Get section IDs
+      const sectionIds = enrollments.map(e => e.section_id);
+      console.log('Section IDs:', sectionIds);
+
+      // Fetch sections with courses
+      const { data: sections, error: sectionError } = await Supabase
+        .from('section')
+        .select('*, course(*)')
+        .in('id', sectionIds);
+
+      console.log('Sections data:', sections);
+      console.log('Sections error:', sectionError);
+
+      if (sectionError) throw sectionError;
+
+      setEnrolledCourses(sections || []);
     } catch (error) {
       console.error('Error fetching enrolled courses:', error);
     }
