@@ -4,9 +4,10 @@
 import { useAuth } from '../hooks/useAuth';
 import { useAccessibility } from '../context/AccessibilityContext';
 import DashboardLayout from '../components/dashbord/DashboardLayout';
-import { useEffect, useState } from 'react';
+import ClassSchedule from '../components/ClassSchedule';
+import { useEffect, useState, useCallback } from 'react';
 import { Supabase } from '../lib/supabase-client';
-import { Section, Course } from '../types/course';
+import { Section } from '../types/course';
 
 const greetings = [
   "Welcome back",
@@ -34,7 +35,7 @@ export default function StudentDashboardPage() {
   const { fontSizeMultiplier } = useAccessibility();
   const [greeting, setGreeting] = useState('');
   const [motivation, setMotivation] = useState('');
-  const [enrolledCourses, setEnrolledCourses] = useState<any[]>([]);
+  const [enrolledCourses, setEnrolledCourses] = useState<Section[]>([]);
 
   useEffect(() => {
     // Set random greeting and motivation on mount
@@ -50,7 +51,7 @@ export default function StudentDashboardPage() {
     }
   }, [user]);
 
-  const fetchEnrolledCourses = async () => {
+  const fetchEnrolledCourses = useCallback(async () => {
     if (!user) return;
     try {
       console.log('Fetching enrolled courses for user:', user.id);
@@ -91,7 +92,7 @@ export default function StudentDashboardPage() {
     } catch (error) {
       console.error('Error fetching enrolled courses:', error);
     }
-  };
+  }, [user]);
 
   if (!user) return null;
 
@@ -205,31 +206,43 @@ export default function StudentDashboardPage() {
           )}
         </div>
 
+        {/* Class Schedule Section */}
+        <div className="mt-8">
+          <ClassSchedule enrolledCourses={enrolledCourses} />
+        </div>
+
         {/* Quick Stats or Additional Content */}
         <div className="mt-8 grid grid-cols-1 md:grid-cols-3 gap-6">
           <div className="bg-white dark:bg-gray-800 rounded-lg p-6 shadow-sm border border-gray-200 dark:border-gray-700">
-            <h3 
+            <h3
               className="text-gray-900 dark:text-white font-semibold mb-2"
               style={{ fontSize: `${18 * fontSizeMultiplier}px` }}
             >
-              Upcoming Classes
+              Enrolled Courses
             </h3>
-            <p 
-              className="text-gray-600 dark:text-gray-400"
+            <p
+              className="text-gray-600 dark:text-gray-400 mb-3"
               style={{ fontSize: `${14 * fontSizeMultiplier}px` }}
             >
-              View your schedule
+              View your courses in table format
             </p>
+            <a
+              href="/student/schedule"
+              className="text-blue-600 hover:text-blue-500 dark:text-blue-400 dark:hover:text-blue-300 text-sm font-medium"
+              style={{ fontSize: `${14 * fontSizeMultiplier}px` }}
+            >
+              View Courses →
+            </a>
           </div>
 
           <div className="bg-white dark:bg-gray-800 rounded-lg p-6 shadow-sm border border-gray-200 dark:border-gray-700">
-            <h3 
+            <h3
               className="text-gray-900 dark:text-white font-semibold mb-2"
               style={{ fontSize: `${18 * fontSizeMultiplier}px` }}
             >
               Advising
             </h3>
-            <p 
+            <p
               className="text-gray-600 dark:text-gray-400"
               style={{ fontSize: `${14 * fontSizeMultiplier}px` }}
             >
@@ -238,13 +251,13 @@ export default function StudentDashboardPage() {
           </div>
 
           <div className="bg-white dark:bg-gray-800 rounded-lg p-6 shadow-sm border border-gray-200 dark:border-gray-700">
-            <h3 
+            <h3
               className="text-gray-900 dark:text-white font-semibold mb-2"
               style={{ fontSize: `${18 * fontSizeMultiplier}px` }}
             >
               Resources
             </h3>
-            <p 
+            <p
               className="text-gray-600 dark:text-gray-400"
               style={{ fontSize: `${14 * fontSizeMultiplier}px` }}
             >
