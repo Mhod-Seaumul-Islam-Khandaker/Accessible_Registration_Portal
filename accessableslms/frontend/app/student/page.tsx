@@ -233,7 +233,7 @@ export default function StudentDashboardPage() {
               className="text-gray-600 dark:text-gray-400"
               style={{ fontSize: `${14 * fontSizeMultiplier}px` }}
             >
-              Connect with advisors
+              <a href="/student/advising" className="text-blue-600 hover:underline">Manage course enrollment</a>
             </p>
           </div>
 
