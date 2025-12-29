@@ -166,35 +166,41 @@ export default function StudentDashboardPage() {
               No courses enrolled yet. <a href="/student/course-selection" className="text-blue-600 hover:underline">Select courses</a>
             </p>
           ) : (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {enrolledCourses.map(section => (
-                <div key={section.id} className="bg-white dark:bg-gray-800 rounded-lg p-6 shadow-sm border border-gray-200 dark:border-gray-700">
-                  <h3 
-                    className="text-lg font-semibold text-gray-900 dark:text-white mb-2"
-                    style={{ fontSize: `${18 * fontSizeMultiplier}px` }}
-                  >
-                    {section.course?.course_code}: {section.course?.title}
-                  </h3>
-                  <p 
-                    className="text-gray-600 dark:text-gray-400 mb-2"
-                    style={{ fontSize: `${14 * fontSizeMultiplier}px` }}
-                  >
-                    Section: {section.section_label}
-                  </p>
-                  <p 
-                    className="text-gray-600 dark:text-gray-400 mb-2"
-                    style={{ fontSize: `${14 * fontSizeMultiplier}px` }}
-                  >
-                    Location: {section.location}
-                  </p>
-                  <p 
-                    className="text-sm text-gray-500 dark:text-gray-500"
-                    style={{ fontSize: `${12 * fontSizeMultiplier}px` }}
-                  >
-                    Credits: {section.course?.credits}
-                  </p>
-                </div>
-              ))}
+            <div>
+              <div className="mb-4 flex space-x-4">
+                <a href="/student/course-selection" className="text-blue-600 hover:underline">Select more courses</a>
+                <a href="/student/course-drop" className="text-red-600 hover:underline">Drop courses</a>
+              </div>
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                {enrolledCourses.map(section => (
+                  <div key={section.id} className="bg-white dark:bg-gray-800 rounded-lg p-6 shadow-sm border border-gray-200 dark:border-gray-700">
+                    <h3 
+                      className="text-lg font-semibold text-gray-900 dark:text-white mb-2"
+                      style={{ fontSize: `${18 * fontSizeMultiplier}px` }}
+                    >
+                      {section.course?.course_code}: {section.course?.title}
+                    </h3>
+                    <p 
+                      className="text-gray-600 dark:text-gray-400 mb-2"
+                      style={{ fontSize: `${14 * fontSizeMultiplier}px` }}
+                    >
+                      Section: {section.section_label}
+                    </p>
+                    <p 
+                      className="text-gray-600 dark:text-gray-400 mb-2"
+                      style={{ fontSize: `${14 * fontSizeMultiplier}px` }}
+                    >
+                      Location: {section.location}
+                    </p>
+                    <p 
+                      className="text-sm text-gray-500 dark:text-gray-500"
+                      style={{ fontSize: `${12 * fontSizeMultiplier}px` }}
+                    >
+                      Credits: {section.course?.credits}
+                    </p>
+                  </div>
+                ))}
+              </div>
             </div>
           )}
         </div>
