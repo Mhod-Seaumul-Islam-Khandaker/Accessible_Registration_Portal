@@ -72,11 +72,10 @@ const VoiceNavigation: React.FC<VoiceNavigationProps> = ({ role }) => {
       };
     } else if (role === 'teacher') {
       return {
-        ...commonCommands,
         // Add teacher commands if needed
       };
     }
-    return commonCommands;
+    return {};
   };
 
   const startListening = () => {
