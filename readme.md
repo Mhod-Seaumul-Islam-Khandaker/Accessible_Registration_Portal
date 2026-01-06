@@ -1,8 +1,8 @@
-# AccessibleAdvisingPortal
+# Accessible Registration Portal
 
 ## Description
 
-AccessibleAdvisingPortal is a comprehensive, web-based Learning Management System (LMS) designed to provide an inclusive and accessible platform for managing student academic life cycles and advising. Built with modern web technologies, it prioritizes accessibility features to ensure usability for students and administrators with diverse needs. The system supports role-based access for students and administrators, enabling seamless course management, advising, scheduling, and administrative oversight.
+Accessible Registration Portal is a comprehensive, web-based Learning Management System (LMS) designed to provide an inclusive and accessible platform for managing student academic life cycles and advising. Built with modern web technologies, it prioritizes accessibility features to ensure usability for students and administrators with diverse needs. The system supports role-based access for students and administrators, enabling seamless course management, advising, scheduling, and administrative oversight.
 
 The platform integrates advanced accessibility tools, including voice navigation and customizable settings, to create an equitable educational environment. Leveraging Next.js for the frontend and Supabase for backend services, AccessibleSLMS offers a responsive, scalable solution for educational institutions.
 
